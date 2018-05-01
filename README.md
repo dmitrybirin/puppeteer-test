@@ -9,9 +9,11 @@
 - [x] Create Readme. That was easy:)
 - [x] Choose UI framework -> Puppeteer
 - [x] Get access/docs to API -> https://developers.pipedrive.com/docs/api/v1/
-- [ ] API framework?
+- [x] API framework -> https://www.frisbyjs.com/
 - [x] Init frameworks (Puppeteer)
+- [ ] Lint
 - [ ] Write test cases
 - [ ] Automate test cases
 - [ ] Refactor and Polish
+- [ ] Add how to run tests in Readme
 - [ ] Create FAQ (Why puppeteer, pros and cons, why I did that, not that)

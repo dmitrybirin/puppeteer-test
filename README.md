@@ -11,7 +11,7 @@
 - [x] Get access/docs to API -> https://developers.pipedrive.com/docs/api/v1/
 - [x] API framework -> https://www.frisbyjs.com/
 - [x] Init frameworks (Puppeteer)
-- [ ] Lint
+- [x] Lint
 - [ ] Write test cases
 - [ ] Automate test cases
 - [ ] Refactor and Polish

@@ -10,7 +10,7 @@
 - [x] Choose UI framework -> Puppeteer
 - [x] Get access/docs to API -> https://developers.pipedrive.com/docs/api/v1/
 - [ ] API framework?
-- [ ] Init frameworks
+- [x] Init frameworks (Puppeteer)
 - [ ] Write test cases
 - [ ] Automate test cases
 - [ ] Refactor and Polish

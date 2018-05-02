@@ -12,6 +12,7 @@ describe('person tests', () => {
     const po = {};
     
     beforeAll(async () => {
+        await api.deleteAll();
         page = await global.__BROWSER__.newPage();
         await page.goto(PIPE_URL);
         if (await page.$('h1.auth-title')) await new LoginPage(page).login(EMAIL, PASSWORD);

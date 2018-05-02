@@ -26,7 +26,7 @@ class AddDealPage {
     }
 
     async waitForDialog(){
-        await this.page.waitForSelector(this.selectors.DIALOG, {timeout:3000});
+        await this.page.waitForSelector(this.selectors.DIALOG, {visible: true});
     }
 
     async waitForDialogClosed(){

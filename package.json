@@ -8,8 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "ui": "jest ./ui --config ui/jest.config.json",
-    "ui:debug": "NODE_ENV=debug jest ./ui --config ui/jest.config.json",
+    "ui": "jest ./ui -i --config ui/jest.config.js",
+    "ui:debug": "NODE_ENV=debug jest ./ui -i --config ui/jest.config.js",
     "api": "jest ./api",
     "precommit": "lint-staged"
   },
@@ -23,6 +23,8 @@
     "faker": "^4.1.0",
     "jest": "^22.4.3",
     "jest-cli": "^22.4.3",
+    "jest-environment-node": "^22.4.3",
+    "mkdirp": "^0.5.1",
     "node-fetch": "^2.1.2",
     "puppeteer": "^1.3.0",
     "shortid": "^2.2.8"

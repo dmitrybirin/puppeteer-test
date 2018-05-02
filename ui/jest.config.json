@@ -1,5 +1,0 @@
-{
-    "testRegex": ".(test|spec)\\.(js)$",
-    "testPathIgnorePatterns": ["/api/", "/node_modules/"],
-    "setupTestFrameworkScriptFile" : "./init.js"
-}

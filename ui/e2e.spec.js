@@ -1,32 +1,18 @@
-const puppeteer = require('puppeteer');
 const faker = require('faker');
 const shortid = require('shortid');
 
 const { LoginPage, AddDealPage, PipeLinePage } = require('./pages/');
-const { LOGIN_URL } = require('../urls');
+const { PIPE_URL } = require('../urls');
 const { EMAIL, PASSWORD } = require('../authData');
 const api = require('./api');
 
-const TEST_TIMEOUT = process.env.NODE_ENV === 'debug' ? 40000 : 0;
-const isDebugging = () => {
-    let debugging_mode = {
-        headless: false,
-        slowMo: 100,
-        devtools: true,
-    };
-    return process.env.NODE_ENV === 'debug' ? debugging_mode : {};
-};
-
-
 let page;
-let browser;
 const po = {};
 
 beforeAll(async () => {
-    browser = await puppeteer.launch(isDebugging());
-    page = await browser.newPage();
-    await page.goto(LOGIN_URL);
-    await new LoginPage(page).login(EMAIL, PASSWORD);
+    page = await global.__BROWSER__.newPage();
+    await page.goto(PIPE_URL);
+    if (await page.$('h1.auth-title')) await new LoginPage(page).login(EMAIL, PASSWORD);
 });
 
 beforeEach(async () => {
@@ -39,7 +25,6 @@ beforeEach(async () => {
 afterEach(async () => {
     await po.addDealDialog.closeDialogIfExist();
 });
-
 
 describe('Add deal e2e tests', () => {
 
@@ -62,7 +47,7 @@ describe('Add deal e2e tests', () => {
             title: `${deal.org} deal`
         });
 
-    }, TEST_TIMEOUT);
+    }, global.TEST_TIMEOUT);
 
     test('all fields flow, using API calls', async () => {
         const deal = {
@@ -111,49 +96,6 @@ describe('Add deal e2e tests', () => {
 
         expect(mapped).toEqual(deal);
 
-    }, TEST_TIMEOUT);
+    }, global.TEST_TIMEOUT);
 
-//  Existing/non-existing person
-// Existing/non-existing organisation
-// Title
-// Value number
-// Value currency (investigate currency tests)
-// Stage (investigate different stages in the app)
-// Close date (Calendar, Berlin airport - strange stuff)
-// Ownership
-// Errors
-
-
-});
-
-describe('person tests', async () => {
-    test('new person', async () => {
-        const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
-        await po.addDealDialog.personInput.clickAndType(name);
-        expect(await po.addDealDialog.personInput.getAutocompeteMessage())
-            .toEqual(`‘${name}’ will be added as a new contact`);
-
-        await po.addDealDialog.personInput.clickAutocomplete();
-        expect(await po.addDealDialog.personInput.isNewLabel())
-            .toBeTruthy();
-
-    }, TEST_TIMEOUT);
-
-    test('existing person', async () => {
-        const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
-        await api.createPerson(name);
-        await po.addDealDialog.personInput.clickAndType(name.slice(0,-3));
-        expect(await po.addDealDialog.personInput.getAutocompeteMessage()).toBe(name);
-
-        await po.addDealDialog.personInput.chooseAutocompleteOption(name);
-        expect(await po.addDealDialog.personInput.isNewLabel()).toBeFalsy();
-        expect(await po.addDealDialog.titleInput.getValue()).toBe(`${name} deal`);
-
-    }, TEST_TIMEOUT);
-});
-
-afterAll(() => {
-    if (isDebugging()) {
-        browser.close();
-    }
 });

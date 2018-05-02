@@ -15,8 +15,8 @@ class Input {
 
     async clickAndType(string) {
         try {
-            await this.clear();
             await this.page.waitForSelector(this.selectors.SELF, {visible: true});
+            await this.clear();
             const field = await this.page.$(this.selectors.SELF);
             if (!field) throw new Error(`Element with selector ${this.selectors.SELF} not found`);
 

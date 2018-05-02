@@ -1,21 +1,4 @@
-const formatTitle = (html) => {
-    const matches = html.match(/<img(.*)>(.*)/);
-    return matches[2];
-};
-
-const getValueAndCurrency = (html) => {
-    const matches = html.match(/(.*)&nbsp;(.)/);
-    return ({
-        value: matches[1].replace(/\./g, ''),
-        currency: matches[2],
-    });
-};
-
-const getHTMLbySelector = async (el, selector) => {
-    const element = await el.$(selector);
-    const handler = await element.getProperty('innerHTML');
-    return handler.jsonValue();
-};
+const { sleep } = require('../helpers');
 
 class PipeLinePage {
     constructor(page){
@@ -42,10 +25,31 @@ class PipeLinePage {
     }
 
     async openAddDealDialog() {
+        await sleep(1000);
         const button = await this.page.$(this.selectors.ADD_DEAL_BUTTON);
         await button.click();
     }
 
 }
+
+const formatTitle = (html) => {
+    const matches = html.match(/<img(.*)>(.*)/);
+    return matches[2];
+};
+
+const getValueAndCurrency = (html) => {
+    const matches = html.match(/(.*)&nbsp;(.)/);
+    return ({
+        value: matches[1].replace(/\./g, ''),
+        currency: matches[2],
+    });
+};
+
+const getHTMLbySelector = async (el, selector) => {
+    const element = await el.$(selector);
+    const handler = await element.getProperty('innerHTML');
+    return handler.jsonValue();
+};
+
 
 module.exports = PipeLinePage;

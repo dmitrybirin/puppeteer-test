@@ -12,13 +12,13 @@ class LoginPage {
 
     async submit() {
         await this.page.click(this.selectors.SUBMIT_BUTTON);
+        await this.page.waitForNavigation({waitUntil: ['networkidle0', 'domcontentloaded']});
     }
 
     async login(email, password) {
         await this.loginInput.clickAndType(email);
         await this.passInput.clickAndType(password);
         await this.submit();
-        await this.page.waitForNavigation({waitUntil: ['networkidle0', 'domcontentloaded']});
     }
 
 }

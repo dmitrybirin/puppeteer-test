@@ -8,7 +8,7 @@ class AddDealPage {
         this.titleInput = new Input(page, 'input[name="title"]');
         this.dealInput = new Input(page, 'input[name="value"]');
         this.selectors = {
-            HEADER: '.addDealDialog header',
+            DIALOG: '.addDealDialog',
             DEAL_SELECT: 'div.currency input',
             PIPELINE_RADIOS: 'div.plainStages span',
             CLOSEDATE:'input[name="expected_close_date"]',
@@ -18,12 +18,23 @@ class AddDealPage {
         };
     }
 
-    async waitForHeader(){
-        await this.page.waitForSelector(this.selectors.HEADER, {timeout:3000});
+    async waitForDialog(){
+        await this.page.waitForSelector(this.selectors.DIALOG, {timeout:3000});
+    }
+
+    async waitForDialogClosed(){
+        /* eslint-disable */
+        const checkForNotExist = () => !document.querySelector('.addDealDialog')
+        /* eslint-enable */
+        await this.page.waitForFunction(checkForNotExist, {polling: 'mutation'});
     }
 
     async submit() {
         await this.page.click(this.selectors.SAVE_BUTTON);
+    }
+
+    async closeDialogIfExist() {
+        if (await this.page.$(this.selectors.CLOSE_BUTTON)) await this.page.click(this.selectors.CLOSE_BUTTON);
     }
 
 }

@@ -9,7 +9,7 @@ class Input {
         };
     }
 
-    async clickAndType (string) {
+    async clickAndType(string) {
         try {
             await this.page.waitForSelector(this.selectors.SELF, {visible: true});
             const field = await this.page.$(this.selectors.SELF);
@@ -21,6 +21,12 @@ class Input {
         } catch (e) {
             throw new Error(`Error while click and type on ${this.selectors.SELF}: ${e.message}`);
         }
+    }
+
+    async getValue() {
+        const element = await this.page.$(this.selectors.SELF);
+        const elementHandle = await element.getProperty('value');
+        return elementHandle.jsonValue();
     }
 
     async getAutocompeteMessage() {

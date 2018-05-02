@@ -1,21 +1,13 @@
-const BasePage = require('./basePage');
+const Input = require('../components/input');
 
-class LoginPage extends BasePage {
+class LoginPage {
     constructor(page){
-        super(page);
+        this.page = page;
+        this.loginInput = new Input(page, 'input[id="login"]');
+        this.passInput = new Input(page, 'input[id="password"]');
         this.selectors = {
-            LOGIN_INPUT: 'input[id="login"]',
-            PASSWORD_INPUT: 'input[id="password"]',
             SUBMIT_BUTTON: 'button.submit-button'
         };
-    }
-
-    async inputLogin(email) {
-        await this.clickAndType(this.selectors.LOGIN_INPUT, email);
-    }
-
-    async inputPassword(password) {
-        await this.clickAndType(this.selectors.PASSWORD_INPUT, password);
     }
 
     async submit() {
@@ -23,8 +15,8 @@ class LoginPage extends BasePage {
     }
 
     async login(email, password) {
-        await this.inputLogin(email);
-        await this.inputPassword(password);
+        await this.loginInput.clickAndType(email);
+        await this.passInput.clickAndType(password);
         await this.submit();
         await this.page.waitForNavigation({waitUntil: ['networkidle0', 'domcontentloaded']});
     }

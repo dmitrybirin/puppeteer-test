@@ -32,10 +32,12 @@ describe('Happy path tests', () => {
         const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
         const addDealPage = new AddDealPage(page);
         await addDealPage.waitForHeader();
-        await addDealPage.typePerson(name);
-        const message = await addDealPage.getAutocompeteMessage();
-        expect(message).toEqual(`‘${name}’ will be added as a new contact`);
-
+        await addDealPage.personInput.clickAndType(name);
+        expect(await addDealPage.personInput.getAutocompeteMessage())
+            .toEqual(`‘${name}’ will be added as a new contact`);
+        await addDealPage.personInput.clickAutocomplete();
+        expect(await addDealPage.personInput.isNewLabel())
+            .toBeTruthy();
     }, TEST_TIMEOUT);
 
 

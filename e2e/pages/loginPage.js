@@ -1,38 +1,34 @@
-const puppeteer = require('puppeteer')
+const BasePage = require('./basePage');
 
-class LoginPage {
+class LoginPage extends BasePage {
     constructor(page){
-        this.page = page
+        super(page);
         this.selectors = {
             LOGIN_INPUT: 'input[id="login"]',
             PASSWORD_INPUT: 'input[id="password"]',
             SUBMIT_BUTTON: 'button.submit-button'
-        }
+        };
     }
 
     async inputLogin(email) {
-        const loginField = await this.page.$(this.selectors.LOGIN_INPUT)
-        await loginField.click()
-        await loginField.type(email)
+        await this.clickAndType(this.selectors.LOGIN_INPUT, email);
     }
 
     async inputPassword(password) {
-        const passwordField = await this.page.$(this.selectors.PASSWORD_INPUT)
-        await passwordField.click()
-        await passwordField.type(password)
+        await this.clickAndType(this.selectors.PASSWORD_INPUT, password);
     }
 
     async submit() {
-        await this.page.click(this.selectors.SUBMIT_BUTTON)
+        await this.page.click(this.selectors.SUBMIT_BUTTON);
     }
 
     async login(email, password) {
-        await this.inputLogin(email)
-        await this.inputPassword(password)
-        await this.submit()
-        await this.page.waitForNavigation({waitUntil: "networkidle0"})
+        await this.inputLogin(email);
+        await this.inputPassword(password);
+        await this.submit();
+        await this.page.waitForNavigation({waitUntil: ['networkidle0', 'domcontentloaded']});
     }
 
 }
 
-module.exports = LoginPage
+module.exports = LoginPage;

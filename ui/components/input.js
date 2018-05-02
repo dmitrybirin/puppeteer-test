@@ -30,7 +30,7 @@ class Input {
 
     async getValue() {
         const element = await this.page.$(this.selectors.SELF);
-        getValue(element);
+        return getValueFromElement(element);
     }
 
     async getAutocompeteMessage() {
@@ -48,7 +48,7 @@ class Input {
         await this.page.waitForSelector(ar, {visible: true});
         const options = await this.page.$$(ar);
         const filteredOptions = await Promise.all(
-            options.filter(async (option) => await getValue(option) === text));
+            options.filter(async (option) => await getValueFromElement(option) === text));
         await filteredOptions[0].click();
     }
 
@@ -65,7 +65,7 @@ class Input {
 
 module.exports = Input;
 
-const getValue = async (element) => {
+const getValueFromElement = async (element) => {
     const elementHandle = await element.getProperty('value');
     return elementHandle.jsonValue();
 };

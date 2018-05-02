@@ -8,8 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "e2e": "jest ./e2e --config e2e/jest.config.json",
-    "e2e:debug": "NODE_ENV=debug yarn e2e",
+    "ui": "jest ./ui --config ui/jest.config.json",
+    "ui:debug": "NODE_ENV=debug jest ./ui --config ui/jest.config.json",
     "api": "jest ./api",
     "precommit": "lint-staged"
   },

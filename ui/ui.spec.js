@@ -11,7 +11,7 @@ const TEST_TIMEOUT = process.env.NODE_ENV === 'debug' ? 40000 : 0;
 const isDebugging = () => {
     let debugging_mode = {
         headless: false,
-        slowMo: 20,
+        slowMo: 100,
         devtools: true,
     };
     return process.env.NODE_ENV === 'debug' ? debugging_mode : {};
@@ -113,6 +113,20 @@ describe('Add deal e2e tests', () => {
 
     }, TEST_TIMEOUT);
 
+//  Existing/non-existing person
+// Existing/non-existing organisation
+// Title
+// Value number
+// Value currency (investigate currency tests)
+// Stage (investigate different stages in the app)
+// Close date (Calendar, Berlin airport - strange stuff)
+// Ownership
+// Errors
+
+
+});
+
+describe('person tests', async () => {
     test('new person', async () => {
         const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
         await po.addDealDialog.personInput.clickAndType(name);
@@ -125,18 +139,17 @@ describe('Add deal e2e tests', () => {
 
     }, TEST_TIMEOUT);
 
+    test('existing person', async () => {
+        const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
+        await api.createPerson(name);
+        await po.addDealDialog.personInput.clickAndType(name.slice(0,-3));
+        expect(await po.addDealDialog.personInput.getAutocompeteMessage()).toBe(name);
 
-//  Existing/non-existing person
-// Existing/non-existing organisation
-// Title
-// Value number
-// Value currency (investigate currency tests)
-// Stage (investigate different stages in the app)
-// Close date (Calendar, Berlin airport - strange stuff)
-// Ownership
-// Errors
+        await po.addDealDialog.personInput.chooseAutocompleteOption(name);
+        expect(await po.addDealDialog.personInput.isNewLabel()).toBeFalsy();
+        expect(await po.addDealDialog.titleInput.getValue()).toBe(`${name} deal`);
 
-
+    }, TEST_TIMEOUT);
 });
 
 afterAll(() => {

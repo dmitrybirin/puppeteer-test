@@ -4,7 +4,7 @@ It has kill features: request intercepting, speed, good API
 There are couple of cons, though:
 - only chromium
 - some of the features broken (as for WaitForNavigation)
-- hard to successfully maintain async behavior (aka sleep)
+- hard to successfully maintain async behavior (hello sleep)
 
 Q: Why all jest and puppeteer in dependencies, not devDependencies
 A: If the source code of the app would be in the same monorepo as tests, then more logic will be in putting it in dev deps, but in this particular case, project - is a test project, so I decided put all dev stuff in deps (plus I've got lint and stuff).

@@ -7,7 +7,8 @@
 
 ## Implementation
 I focused on UI tests and have little time, so no pure API tests there.
-I tried to describe all decisions in the FAQ
+I tried to describe all decisions in the [FAQ](FAQ.md)
+
 The UI tests devided by e2e and component/module tests.
 - e2e tests: two tests, demonstrated different approaches. One only UI, the second - with help of API.
 - various component tests: quick incapsulated tests
@@ -40,10 +41,13 @@ yarn ui:debug
 - [x] Automate test cases
 - [x] Add how to run tests in Readme
 - [ ] Improve test coverage
-- [ ] API tests
-- [ ] Improve Autocomplete tests to be able to choose not only first option
 - [ ] Check spinners
 - [ ] Currency tests
 - [ ] DatePicker tests
+- [ ] Ownership tests
+- [ ] API tests
+- [ ] Improve Autocomplete tests to be able to choose not only first option
+- [ ] Intercepting requests
+- [ ] Screenshot comparison for various screen sizes
 - [ ] Select currency and input elements are very similar. Get rid of select.
-- [ ] Create FAQ (Why puppeteer, pros and cons, why I did that, not that)
+- [x] Create FAQ (Why puppeteer, pros and cons, why I did that, not that)

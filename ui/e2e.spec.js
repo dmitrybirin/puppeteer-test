@@ -1,4 +1,5 @@
 const faker = require('faker');
+const moment = require('moment');
 const shortid = require('shortid');
 
 const { LoginPage, AddDealPage, PipeLinePage } = require('./pages/');
@@ -57,7 +58,7 @@ describe('Add deal e2e tests', () => {
             title: `Test deal ${shortid.generate()}`,
             value: faker.random.number(1000000).toString(),
             currency: 'XBT',
-            closeDate: faker.date.future().toLocaleDateString('ru-RU'),
+            closeDate: moment(faker.date.future()).format('DD.MM.YY'),
             status: 'open',
             stage: 3,
         };
@@ -82,15 +83,14 @@ describe('Add deal e2e tests', () => {
 
         const deals = await api.getDeals();
         const createdDeal = deals.data.filter(d => d.title === deal.title)[0];
-        expect(createdDeal).toBeTruthy();
-        
+
         const mapped = {
             name: createdDeal.person_name,
             org: createdDeal.org_name,
             title: createdDeal.title,
             value: createdDeal.value.toString(),
             currency: createdDeal.currency,
-            closeDate: new Date(createdDeal.expected_close_date).toLocaleDateString('ru-RU'),
+            closeDate: moment(createdDeal.expected_close_date).format('DD.MM.YY'),
             status: createdDeal.status,
             stage: createdDeal.stage_order_nr,
         };

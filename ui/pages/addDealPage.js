@@ -30,9 +30,7 @@ class AddDealPage {
     }
 
     async waitForDialogClosed(){
-        /* eslint-disable */
-        const checkForNotExist = () => !document.querySelector('.addDealDialog')
-        /* eslint-enable */
+        const checkForNotExist = () => !document.querySelector('.addDealDialog');
         await this.page.waitForFunction(checkForNotExist, {polling: 'mutation'});
     }
 

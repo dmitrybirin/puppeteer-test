@@ -11,12 +11,16 @@ const isDebugging = () => {
         headless: false,
         slowMo: 30,
         devtools: true,
+        handleSIGINT: true,
     };
     return process.env.NODE_ENV === 'debug' ? debugging_mode : {};
 };
 
 module.exports = async function() {
     const browser = await puppeteer.launch(isDebugging());
+    
+    //For the browser close as well as tests themselfs
+    process.on('SIGINT', () => { browser.close(); process.exit(130); });
 
     global.__BROWSER__ = browser;
     global.__TEST_TIMEOUT__ = process.env.NODE_ENV === 'debug' ? 40000 : 0;

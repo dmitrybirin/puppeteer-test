@@ -25,9 +25,9 @@ class PipeLinePage {
     }
 
     async openAddDealDialog() {
-        await sleep(1000);
-        const button = await this.page.$(this.selectors.ADD_DEAL_BUTTON);
-        await button.click();
+        //TODO. Need to investigate Cause waitForSelector and waitForNavigation didn't work.
+        await sleep(1500);
+        await this.page.click(this.selectors.ADD_DEAL_BUTTON);
     }
 
 }

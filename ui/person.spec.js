@@ -1,56 +1,57 @@
 const faker = require('faker');
 
-const { LoginPage, AddDealPage, PipeLinePage } = require('./pages/');
-const { PIPE_URL } = require('../urls');
-const { EMAIL, PASSWORD } = require('../authData');
+const { AddDealPage, PipeLinePage } = require('./pages/');
+const { login } = require('./scenarios');
 const api = require('./api');
 const { sleep } = require('./helpers');
 
-describe('person tests', () => {
+let page;
+const pageObjects = {};
 
-    let page;
-    const po = {};
-    
-    beforeAll(async () => {
-        await api.deleteAll();
-        page = await global.__BROWSER__.newPage();
-        await page.goto(PIPE_URL);
-        if (await page.$('h1.auth-title')) await new LoginPage(page).login(EMAIL, PASSWORD);
-    });
-    
-    beforeEach(async () => {
-        po.addDealDialog = new AddDealPage(page);
-        po.pipelinePage = new PipeLinePage(page);
-        await po.pipelinePage.openAddDealDialog();
-        await po.addDealDialog.waitForDialog();
-    });
-    
-    afterEach(async () => {
-        await po.addDealDialog.closeDialogIfExist();
-    });
+beforeAll(async () => {
+    page = await global.__BROWSER__.newPage();
+    await login(page);
+});
+
+beforeEach(async () => {
+    pageObjects.addDealDialog = new AddDealPage(page);
+    pageObjects.pipelinePage = new PipeLinePage(page);
+    // await sleep(5000);
+    await pageObjects.pipelinePage.openAddDealDialog();
+    await pageObjects.addDealDialog.waitForDialog();
+});
+
+afterEach(async () => {
+    await pageObjects.addDealDialog.closeDialogIfExist();
+});
+
+
+describe('person tests', async () => {
 
     test('existing person', async () => {
         const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
         await api.createPerson(name);
+        //additional wait for data on server
         await sleep(500);
-        await po.addDealDialog.personInput.clickAndType(name.slice(0,-3));
-        expect(await po.addDealDialog.personInput.getAutocompeteMessage()).toBe(name);
+        await pageObjects.addDealDialog.personInput.clickAndType(name.slice(0,-3));
+        expect(await pageObjects.addDealDialog.personInput.getAutocompeteMessage()).toBe(name);
 
-        await po.addDealDialog.personInput.chooseAutocompleteOption(name);
-        expect(await po.addDealDialog.personInput.isNewLabel()).toBe(false);
-        expect(await po.addDealDialog.titleInput.getValue()).toBe(`${name} deal`);
+        await pageObjects.addDealDialog.personInput.chooseAutocompleteOption(name);
+        expect(await pageObjects.addDealDialog.personInput.isNewLabel()).toBe(false);
+        expect(await pageObjects.addDealDialog.titleInput.getValue()).toBe(`${name} deal`);
 
     }, global.TEST_TIMEOUT);
 
     test('new person', async () => {
         const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
-        await po.addDealDialog.personInput.clickAndType(name);
-        
-        expect(await po.addDealDialog.personInput.getAutocompeteMessage())
+        await pageObjects.addDealDialog.personInput.clickAndType(name);
+        const message = await pageObjects.addDealDialog.personInput.getAutocompeteMessage();
+
+        expect(message)
             .toEqual(`‘${name}’ will be added as a new contact`);
 
-        await po.addDealDialog.personInput.clickAutocomplete();
-        expect(await po.addDealDialog.personInput.isNewLabel()).toBe(true);
+        await pageObjects.addDealDialog.personInput.clickAutocomplete();
+        expect(await pageObjects.addDealDialog.personInput.isNewLabel()).toBe(true);
 
     }, global.TEST_TIMEOUT);
 

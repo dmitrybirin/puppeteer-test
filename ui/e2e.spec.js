@@ -2,30 +2,27 @@ const faker = require('faker');
 const moment = require('moment');
 const shortid = require('shortid');
 
-const { LoginPage, AddDealPage, PipeLinePage } = require('./pages/');
-const { PIPE_URL } = require('../urls');
-const { EMAIL, PASSWORD } = require('../authData');
+const { AddDealPage, PipeLinePage } = require('./pages/');
+const { login } = require('./scenarios');
 const api = require('./api');
 
 let page;
-const po = {};
+const pageObjects = {};
 
 beforeAll(async () => {
-    await api.deleteAll();
     page = await global.__BROWSER__.newPage();
-    await page.goto(PIPE_URL);
-    if (await page.$('h1.auth-title')) await new LoginPage(page).login(EMAIL, PASSWORD);
+    await login(page);
 });
 
 beforeEach(async () => {
-    po.addDealDialog = new AddDealPage(page);
-    po.pipelinePage = new PipeLinePage(page);
-    await po.pipelinePage.openAddDealDialog();
-    await po.addDealDialog.waitForDialog();
+    pageObjects.addDealDialog = new AddDealPage(page);
+    pageObjects.pipelinePage = new PipeLinePage(page);
+    await pageObjects.pipelinePage.openAddDealDialog();
+    await pageObjects.addDealDialog.waitForDialog();
 });
 
 afterEach(async () => {
-    await po.addDealDialog.closeDialogIfExist();
+    await pageObjects.addDealDialog.closeDialogIfExist();
 });
 
 describe('Add deal e2e tests', () => {
@@ -36,12 +33,12 @@ describe('Add deal e2e tests', () => {
             org: `${faker.company.companyName()} ${shortid.generate()}`,
         };
         
-        await po.addDealDialog.personInput.clickAndType(deal.name);
-        await po.addDealDialog.orgInput.clickAndType(deal.org);
-        await po.addDealDialog.submit();
-        await po.addDealDialog.waitForDialogClosed();
+        await pageObjects.addDealDialog.personInput.clickAndType(deal.name);
+        await pageObjects.addDealDialog.orgInput.clickAndType(deal.org);
+        await pageObjects.addDealDialog.submit();
+        await pageObjects.addDealDialog.waitForDialogClosed();
 
-        const pipeDataFirstStage = await po.pipelinePage.getDealsDataByStage(1);
+        const pipeDataFirstStage = await pageObjects.pipelinePage.getDealsDataByStage(1);
         expect(pipeDataFirstStage).toContainEqual({
             org: deal.org,
             currency: '€',
@@ -66,20 +63,20 @@ describe('Add deal e2e tests', () => {
         await api.createPerson(deal.name);
         await api.createOrg(deal.org);
         
-        await po.addDealDialog.personInput.clickAndType(deal.name);
-        await po.addDealDialog.personInput.chooseAutocompleteOption(deal.name);
+        await pageObjects.addDealDialog.personInput.clickAndType(deal.name);
+        await pageObjects.addDealDialog.personInput.chooseAutocompleteOption(deal.name);
 
-        await po.addDealDialog.orgInput.clickAndType(deal.org);
-        await po.addDealDialog.orgInput.chooseAutocompleteOption(deal.org);
+        await pageObjects.addDealDialog.orgInput.clickAndType(deal.org);
+        await pageObjects.addDealDialog.orgInput.chooseAutocompleteOption(deal.org);
 
-        await po.addDealDialog.titleInput.clickAndType(deal.title);
-        await po.addDealDialog.valueInput.clickAndType(deal.value);
-        await po.addDealDialog.currencySelect.chooseByTyping(deal.currency);
-        await po.addDealDialog.chooseStage(deal.stage);
-        await po.addDealDialog.dateInput.clickAndType(deal.closeDate);
+        await pageObjects.addDealDialog.titleInput.clickAndType(deal.title);
+        await pageObjects.addDealDialog.valueInput.clickAndType(deal.value);
+        await pageObjects.addDealDialog.currencySelect.chooseByTyping(deal.currency);
+        await pageObjects.addDealDialog.chooseStage(deal.stage);
+        await pageObjects.addDealDialog.dateInput.clickAndType(deal.closeDate);
 
-        await po.addDealDialog.submit();
-        await po.addDealDialog.waitForDialogClosed();
+        await pageObjects.addDealDialog.submit();
+        await pageObjects.addDealDialog.waitForDialogClosed();
 
         const deals = await api.getDeals();
         const createdDeal = deals.data.filter(d => d.title === deal.title)[0];

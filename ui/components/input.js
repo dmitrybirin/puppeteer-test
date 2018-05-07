@@ -21,7 +21,7 @@ class Input {
             if (!field) throw new Error(`Element with selector ${this.selectors.SELF} not found`);
 
             await field.click();
-            await field.type(string);
+            await field.type(string, {delay: 20});
 
         } catch (e) {
             throw new Error(`Error while click and type on ${this.selectors.SELF}: ${e.message}`);
@@ -34,13 +34,9 @@ class Input {
     }
 
     async getAutocompeteMessage() {
-        try {
-            const ar = this.selectors.AUTOCOMPLETE_RESULT;
-            await this.page.waitForSelector(ar, {visible: true});
-            return await this.page.$eval(ar, e=>e.innerHTML);
-        } catch (error) {
-            return null;
-        }        
+        const ar = this.selectors.AUTOCOMPLETE_RESULT;
+        await this.page.waitForSelector(ar, {visible: true, timeout: 10000});
+        return await this.page.$eval(ar, e=>e.innerHTML);
     }
 
     async chooseAutocompleteOption(text) {

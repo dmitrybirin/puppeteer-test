@@ -8,8 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "ui": "jest ./ui -i --config ui/jest.config.js",
-    "ui:debug": "NODE_ENV=debug jest ./ui -i --config ui/jest.config.js",
+    "ui": "jest ./ui --config ui/jest.config.js",
+    "ui:debug": "NODE_ENV=debug jest -i ./ui --config ui/jest.config.js",
     "api": "jest ./api",
     "precommit": "lint-staged"
   },

@@ -22,3 +22,6 @@ rules:
     - always
   no-console:
     - off
+  comma-dangle:
+    - error
+    - only-multiline

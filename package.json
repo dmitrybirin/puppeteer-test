@@ -1,9 +1,9 @@
 {
-  "name": "pipedrive-test",
+  "name": "puppeteer-test",
   "version": "1.0.0",
-  "description": "test for Pipedrive.com",
+  "description": "puppeteer first approach",
   "main": "index.js",
-  "repository": "git@gitlab.com:dmitrybirin/pipedrive-test.git",
+  "repository": "git@github.com:dmitrybirin/puppeteer-test.git",
   "author": "Dmitry Birin <dmitry.birin@uptick.com>",
   "license": "MIT",
   "private": true,

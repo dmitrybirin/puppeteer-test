@@ -1,13 +1,4 @@
-# Pipedrive test
-
-## Description
-
-1. Create automated API and UI tests for “Add deal” feature in Pipedrive using JavaScript based testing framework.
-2. The amount and scope of the tests is up to you to decide, just report how much time did you use to solve the task.
-
-## Implementation
-I focused on UI tests and have little time, so no pure API tests there.
-I tried to describe all decisions in the [FAQ](FAQ.md)
+# The Puppeteer Task
 
 The UI tests devided by e2e and component/module tests.
 - e2e tests: two tests, demonstrated different approaches. One only UI, the second - with help of API.
